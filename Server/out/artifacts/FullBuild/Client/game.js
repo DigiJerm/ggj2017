@@ -26,9 +26,10 @@ Game.prototype.update = function()
 			this.sendCharge();
 		}
 	} else {
-		if (this.charge !== 0)
-			this.pulse();
-		this.charge = 0;
+		if (this.charge !== 0) {
+			this.charge--;
+			this.sendCharge();
+		}
 	}
 };
 
