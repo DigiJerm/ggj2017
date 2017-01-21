@@ -39,13 +39,73 @@ public class Controller
 
         RouteOverview.enableRouteOverview();
 
+        Spark.get("/load/:gameHash/player/:playerHash", (request, response) ->
+        {
+            System.out.println("/load/"+request.params(":gameHash")+"/player/"+request.params(":playerHash"));
+            Game game = games.get(Integer.parseInt(request.params(":gameHash")));
+            if(game != null)
+            {
+                Player player = game.getPlayerByHash(Integer.parseInt(request.params(":playerHash")));
+                if(player != null)
+                {
+                    String output = player.toJson().toString();
+                    System.out.println(output);
+                    return output;
+                }
+                else
+                {
+                    response.status(418);
+                    return "{\"data\":\"player_not_found\"}";
+                }
+            }
+            else
+            {
+                response.status(418);
+                return "{\"data\":\"game_not_found\"}";
+            }
+        });
+
+        Spark.get("/load/:gameHash/line/:lineHash", (request, response) ->
+        {
+            System.out.println("/load/"+request.params(":gameHash")+"/line/"+request.params(":lineHash"));
+            Game game = games.get(Integer.parseInt(request.params(":gameHash")));
+            if(game != null)
+            {
+                Line line = game.getLineByHash(Integer.parseInt(request.params(":lineHash")));
+                if(line != null)
+                {
+                    String output = line.toJson().toString();
+                    System.out.println(output);
+                    return output;
+                }
+                else
+                {
+                    response.status(418);
+                    return "{\"data\":\"line_not_found\"}";
+                }
+            }
+            else
+            {
+                response.status(418);
+                return "{\"data\":\"game_not_found\"}";
+            }
+        });
+
         Spark.get("/load/:gameHash", (request, response) ->
         {
             System.out.println("/load/"+request.params(":gameHash"));
-            String tempOutput = games.get(Integer.parseInt(request.params(":gameHash")))
-                                     .toJson().toString();
-            System.out.println(tempOutput);
-            return tempOutput;
+            Game game = games.get(Integer.parseInt(request.params(":gameHash")));
+            if(game != null)
+            {
+                String output = game.toJson().toString();
+                System.out.println(output);
+                return output;
+            }
+            else
+            {
+                response.status(418);
+                return "{\"data\":\"game_not_found\"}";
+            }
         });
 
         Spark.put("/game/submit/:gameHash/:playerHash", (request, response) ->
@@ -55,12 +115,21 @@ public class Controller
             JSONObject jsonObject = new JSONObject(request.body());
             if(jsonObject.get(Util.JSON_KEY_Controller_Action).equals(Util.JSON_VALUE_Controller_Action_Pulse))
             {
-                games.get(Integer.parseInt(request.params(":gameHash")))
-                     .playerUpdate(Integer.parseInt(request.params(":playerHash")), jsonObject);
-                return "{\"data\":\"received\"}";
+                Game game = games.get(Integer.parseInt(request.params(":gameHash")));
+                if(game != null)
+                {
+                    game.playerUpdate(Integer.parseInt(request.params(":playerHash")), jsonObject);
+                    return "{\"data\":\"received\"}";
+                }
+                else
+                {
+                    response.status(418);
+                    return "{\"data\":\"game_not_found\"}";
+                }
             }
             else
             {
+                response.status(418);
                 return "\"data\":\"unknown_type\"}";
             }
         });

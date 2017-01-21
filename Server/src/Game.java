@@ -81,8 +81,18 @@ public class Game implements Runnable
         return json;
     }
 
-    public void playerUpdate(int i, JSONObject jsonObject)
+    public void playerUpdate(int hashCode, JSONObject jsonObject)
     {
-        players.get(i).update(jsonObject);
+        getPlayerByHash(hashCode).update(jsonObject);
+    }
+
+    public Line getLineByHash(int hashcode)
+    {
+        return lines.stream().filter(x -> x.hashCode() == hashcode).findFirst().get();
+    }
+
+    public Player getPlayerByHash(int hashcode)
+    {
+        return players.stream().filter(x -> x.hashCode() == hashcode).findFirst().get();
     }
 }
