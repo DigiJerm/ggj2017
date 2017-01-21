@@ -42,8 +42,10 @@ public class Controller
         Spark.get("/load/:gameHash", (request, response) ->
         {
             System.out.println("/load/"+request.params(":gameHash"));
-            return games.get(Integer.parseInt(request.params(":gameHash")))
-                        .toJson().toString();
+            String tempOutput = games.get(Integer.parseInt(request.params(":gameHash")))
+                                     .toJson().toString();
+            System.out.println(tempOutput);
+            return tempOutput;
         });
 
         Spark.put("/game/submit/:gameHash/:playerHash", (request, response) ->
@@ -62,17 +64,21 @@ public class Controller
             System.out.println(request.body());
             Game game = new Game(new JSONObject(request.body()));
             games.put(game.hashCode(), game);
+            System.out.println(game.jsonHash());
             return game.jsonHash();
         });
 
         Spark.get("/gameList", (request, response) ->
         {
+            System.out.println("/gameList");
             JSONObject json = new JSONObject();
             games.forEach((key, value) ->
                           {
                               json.append(Util.JSON_KEY_GameHash, key)
                                       .append(Util.JSON_KEY_GameData, value.toJson());
                           });
+
+            System.out.println(json.toString());
             return json.toString();
         });
 

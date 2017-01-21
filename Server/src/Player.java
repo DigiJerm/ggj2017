@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Player
 {
     private int health;
-    public boolean hasRequestedPause = true;
+    public boolean hasRequestedPause = false;
     private ArrayList<Line> linkedLines;
 
     public Player(int health, int numberOfLines)

@@ -30,7 +30,11 @@ public class Line
         {
             if(pointDirectionIsLeft.get(index))
             {
-                
+                //newPointDirectionIsLeft =
+            }
+            else
+            {
+
             }
         }
         synchronized(this)

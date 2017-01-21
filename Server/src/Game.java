@@ -53,7 +53,7 @@ public class Game implements Runnable
     @Override
     public void run()
     {
-        boolean areAllPlayersReady = players.stream().allMatch(x -> x.hasRequestedPause);
+        boolean areAllPlayersReady = players.stream().noneMatch(x -> x.hasRequestedPause);
         while(areAllPlayersReady)
         {
             lines.forEach(Line::update);
