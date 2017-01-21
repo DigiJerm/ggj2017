@@ -88,6 +88,12 @@ public class Controller
             return indexHTML;
         });
 
+        Spark.exception(Exception.class, (exception, request, response) ->
+        {
+            System.err.println(request.url());
+            exception.printStackTrace();
+        });
+
         System.out.println("Server initialization complete. Listening on port " + PORT);
     }
 }

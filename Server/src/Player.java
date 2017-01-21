@@ -11,10 +11,10 @@ public class Player
     public boolean hasRequestedPause = false;
     private ArrayList<Line> linkedLines;
 
-    public Player(int health, int numberOfLines)
+    public Player()
     {
-        this.health = health;
-       this.linkedLines = new ArrayList<>(numberOfLines);
+        this.health = 0;
+       this.linkedLines = new ArrayList<>(2);
     }
 
     public JSONObject toJson()

@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.sparkjava:spark-core:2.5.4" level="project" />
     <orderEntry type="library" name="org.json:json:20160212" level="application" />
+    <orderEntry type="library" name="slf4j-jdk14-1.7.22-sources" level="project" />
   </component>
 </module>

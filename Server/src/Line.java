@@ -64,8 +64,8 @@ public class Line
             }
             else if(source == player1)
             {
-                pointDirectionIsLeft.set(pointDirectionIsLeft.size(), Math.abs(data) >= Math.abs(pointSize.get(pointSize.size())));
-                pointSize.set(pointSize.size(), pointSize.get(pointSize.size()) + data);
+                pointDirectionIsLeft.set(pointDirectionIsLeft.size(), Math.abs(data) >= Math.abs(pointSize.get(pointSize.size() - 1)));
+                pointSize.set(pointSize.size(), pointSize.get(pointSize.size() - 1) + data);
             }
         }
     }

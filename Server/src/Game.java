@@ -12,16 +12,18 @@ public class Game implements Runnable
     private ArrayList<Line> lines;
     private ArrayList<Player> players;
 
-    public Game(int playerCount, int gameWidth, int gameHeight)
+    private Game(int playerCount, int gameWidth, int gameHeight)
     {
         this.gameHeight = gameHeight;
         this.players = new ArrayList<>(playerCount);
         this.lines = new ArrayList<>(playerCount);
-        for(int index = 0; index < lines.size() - 1; index++)
+        players.add(new Player());
+        for(int index = 0; index < playerCount - 1; index++)
         {
-            lines.set(index, new Line(gameWidth, players.get(index), players.get(index + 1)));
+            players.add(new Player());
+            lines.add(new Line(gameWidth, players.get(index), players.get(index + 1)));
         }
-        lines.set(lines.size(), new Line(gameWidth, players.get(lines.size()), players.get(0)));
+        lines.add(new Line(gameWidth, players.get(players.size()-1), players.get(0)));
     }
 
     public Game(JSONObject jsonObject)
