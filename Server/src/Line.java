@@ -42,6 +42,7 @@ public class Line
                 if(index == 0 && pointSize[index] != 0)
                 {
                     System.err.println("Player -> Wins");
+                    player0.setIsDead();
                 }
                 else
                 {
@@ -54,6 +55,7 @@ public class Line
                 if(index == pointSize.length-1 && pointSize[index] != 0)
                 {
                     System.err.println("Player <- Wins");
+                    player1.setIsDead();
                 }
                 else
                 {

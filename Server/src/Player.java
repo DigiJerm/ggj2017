@@ -10,6 +10,7 @@ public class Player
     private int health;
     public boolean hasRequestedPause = false;
     private ArrayList<Line> linkedLines;
+    private boolean isDead = false;
 
     public Player()
     {
@@ -22,6 +23,7 @@ public class Player
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(Util.JSON_KEY_Player_Health, health);
         jsonObject.put(Util.JSON_KEY_Player_HashCode, hashCode());
+        jsonObject.put(Util.JSON_KEY_Player_IsDead, isDead);
         return jsonObject;
     }
 
@@ -35,7 +37,16 @@ public class Player
         health = jsonObject.getInt(Util.JSON_KEY_Player_Value);
     }
 
-    public void update()
+    public void setIsDead()
+    {
+        isDead = true;
+    }
+
+    /**
+     * runs update code
+     * @return if the player is now marked as 'dead'
+     */
+    public boolean update()
     {
         //Moved to client
 //        if(health > 0) health -= 1;
@@ -45,5 +56,7 @@ public class Player
         {
             line.playerUpdate(health, this);
         }
+
+        return isDead;
     }
 }

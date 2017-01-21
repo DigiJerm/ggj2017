@@ -64,9 +64,10 @@ public class Game implements Runnable
     public void run()
     {
         //boolean areAllPlayersReady = players.stream().noneMatch(x -> x.hasRequestedPause);
-        while(true)
+        final boolean[] areAllPlayersAlive = {true};
+        while(areAllPlayersAlive[0])
         {
-            players.forEach(Player::update);
+            players.forEach((player) -> areAllPlayersAlive[0] &= player.update());
             lines.forEach(Line::update);
 
             try{

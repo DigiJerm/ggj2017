@@ -41,7 +41,7 @@ public class Controller
 
         Spark.get("/load/:gameHash/player/:playerHash", (request, response) ->
         {
-            System.out.println("/load/"+request.params(":gameHash")+"/player/"+request.params(":playerHash"));
+//            System.out.println("/load/"+request.params(":gameHash")+"/player/"+request.params(":playerHash"));
             Game game = games.get(Integer.parseInt(request.params(":gameHash")));
             if(game != null)
             {
@@ -49,7 +49,7 @@ public class Controller
                 if(player != null)
                 {
                     String output = player.toJson().toString();
-                    System.out.println("\t"+output);
+//                    System.out.println("\t"+output);
                     return output;
                 }
                 else
@@ -67,7 +67,7 @@ public class Controller
 
         Spark.get("/load/:gameHash/line/:lineHash", (request, response) ->
         {
-            System.out.println("/load/"+request.params(":gameHash")+"/line/"+request.params(":lineHash"));
+//            System.out.println("/load/"+request.params(":gameHash")+"/line/"+request.params(":lineHash"));
             Game game = games.get(Integer.parseInt(request.params(":gameHash")));
             if(game != null)
             {
@@ -75,7 +75,7 @@ public class Controller
                 if(line != null)
                 {
                     String output = line.toJson().toString();
-                    System.out.println("\t"+output);
+//                    System.out.println("\t"+output);
                     return output;
                 }
                 else
@@ -93,12 +93,12 @@ public class Controller
 
         Spark.get("/load/:gameHash", (request, response) ->
         {
-            System.out.println("/load/"+request.params(":gameHash"));
+//            System.out.println("/load/"+request.params(":gameHash"));
             Game game = games.get(Integer.parseInt(request.params(":gameHash")));
             if(game != null)
             {
                 String output = game.toJson().toString();
-                System.out.println("\t"+output);
+//                System.out.println("\t"+output);
                 return output;
             }
             else
@@ -110,8 +110,8 @@ public class Controller
 
         Spark.put("/game/submit/:gameHash/:playerHash", (request, response) ->
         {
-            System.out.println("/game/submit/"+request.params(":gameHash") +"/"+ request.params(":playerHash"));
-            System.out.println("\t"+request.body());
+//            System.out.println("/game/submit/"+request.params(":gameHash") +"/"+ request.params(":playerHash"));
+//            System.out.println("\t"+request.body());
             JSONObject jsonObject = new JSONObject(request.body());
             if(jsonObject.get(Util.JSON_KEY_Controller_Action).equals(Util.JSON_VALUE_Controller_Action_Pulse) ||
                jsonObject.get(Util.JSON_KEY_Controller_Action).equals(Util.JSON_VALUE_Controller_Action_Charge))
@@ -137,35 +137,35 @@ public class Controller
 
         Spark.post("/create/submit", (request, response) ->
         {
-            System.out.println("/create/submit");
-            System.out.println("\t"+request.body());
+//            System.out.println("/create/submit");
+//            System.out.println("\t"+request.body());
             Game game = new Game(new JSONObject(request.body()));
             games.put(game.hashCode(), game);
             JSONObject gameData = game.jsonHash();
-            System.out.println("\t"+gameData);
+//            System.out.println("\t"+gameData);
             new Thread(game).start();
             return gameData;
         });
 
         Spark.get("/gameList", (request, response) ->
         {
-            System.out.println("/gameList");
+//            System.out.println("/gameList");
             JSONObject json = new JSONObject();
             games.forEach((key, value) -> json.append(Util.JSON_KEY_GameData, value.jsonHash()));
-            System.out.println("\t"+json.toString());
+//            System.out.println("\t"+json.toString());
             return json.toString();
         });
 
         Spark.get("/", (request, response) ->
         {
-            System.out.println("/");
+//            System.out.println("/");
             return indexHTML;
         });
 
         Spark.exception(Exception.class, (exception, request, response) ->
         {
-            System.err.println("URL:"+request.url());
-            System.err.println("Body:"+request.body());
+//            System.err.println("URL:"+request.url());
+//            System.err.println("Body:"+request.body());
             exception.printStackTrace();
         });
 
