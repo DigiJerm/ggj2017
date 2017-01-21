@@ -19,6 +19,7 @@ function Game(gameHash, playerHash, playerIndex)
 
 Game.prototype.update = function()
 {
+	this.loadState();
 	if (Key.isDown(Key.SPACE)) {
 		if (this.charge < 45) {
 			this.charge++;
@@ -100,4 +101,31 @@ Game.prototype.pulse = function() {
 	xhr.open("PUT", "/game/submit/" + this.gameHash + "/" + this.playerHash);
 	xhr.responseType = "json";
 	xhr.send(JSON.stringify({ action: "pulse", amount: this.charge }));
+};
+
+
+
+Game.prototype.loadState = function () {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(x, g) {
+		return function() {
+			if (x.readyState == XMLHttpRequest.DONE) {
+				if (x.status === 200)
+					g.handleStateLoaded(x);
+				else
+					alert("Error :( Can't load data from server :(");
+			}
+		};
+	}(xhr, this);
+	xhr.open("GET", "/load/" + this.gameHash);
+	xhr.responseType = "json";
+	xhr.send();
+};
+
+
+
+Game.prototype.handleStateLoaded = function (xhr) {
+	for (var i = 0; i < xhr.response.lines[0].lineMagnitude.length; i++) {
+		this.line.Offsets[i] = xhr.response.lines[0].lineMagnitude[i];
+	}
 };
