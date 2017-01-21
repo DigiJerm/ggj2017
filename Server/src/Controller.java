@@ -2,10 +2,12 @@
  * Created by Atraxi on 20/01/2017.
  */
 
-import spark.Redirect;
 import spark.Spark;
 import spark.route.RouteOverview;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 public class Controller
@@ -13,15 +15,19 @@ public class Controller
     private static HashMap<String, Game> games = new HashMap<>();
     private static final int PORT = 4321;
 
-    public static void main(String[] args)
-    {
+    private static String indexHTML;
+    private static String createHTML;
 
+    public static void main(String[] args) throws IOException
+    {
+        loadPageData();
         sparkInitialization();
     }
 
-    private void loadPageData()
+    private static void loadPageData() throws IOException
     {
-
+        indexHTML = new String(Files.readAllBytes(Paths.get("Client\\index.html")));
+        createHTML = new String(Files.readAllBytes(Paths.get("Client\\create.html")));
     }
 
     private static void sparkInitialization()
@@ -30,7 +36,7 @@ public class Controller
 
         Spark.port(PORT);
 
-        Spark.staticFiles.location("/Client");
+        Spark.staticFiles.externalLocation("Client");
 
         RouteOverview.enableRouteOverview();
 
@@ -69,13 +75,10 @@ public class Controller
 
             return "{\"data\":\"received\"}";
         });
-        Spark.get("/create", (request, response) ->
-        {
 
-            return "testCreate";
-        });
+        Spark.get("/create", (request, response) -> createHTML);
 
-        Spark.redirect.get("/", "/index.html", Redirect.Status.MOVED_PERMANENTLY);
+        Spark.get("/", (request, response) -> indexHTML);
 
         System.out.println("Server initialization complete. Listening on port " + PORT);
     }
