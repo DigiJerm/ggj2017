@@ -20,7 +20,8 @@ public class Player
     public JSONObject toJson()
     {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.append(Util.JSON_KEY_Player_Health, health);
+        jsonObject.put(Util.JSON_KEY_Player_Health, health);
+        jsonObject.put(Util.JSON_KEY_Player_HashCode, hashCode());
         return jsonObject;
     }
 

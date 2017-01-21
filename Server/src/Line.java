@@ -46,10 +46,11 @@ public class Line
     public JSONObject toJson()
     {
         JSONObject json = new JSONObject();
-        json.put(Util.JSON_KEY_Line_size, pointSize);
-        json.put(Util.JSON_KEY_Line_direction, pointDirectionIsLeft);
-        json.put(Util.JSON_KEY_Line_player0, player0.hashCode());
-        json.put(Util.JSON_KEY_Line_player1, player1.hashCode());
+        json.put(Util.JSON_KEY_Line_Size, pointSize);
+        json.put(Util.JSON_KEY_Line_Direction, pointDirectionIsLeft);
+        json.put(Util.JSON_KEY_Line_Player0, player0.hashCode());
+        json.put(Util.JSON_KEY_Line_Player1, player1.hashCode());
+        json.put(Util.JSON_KEY_Line_HashCode, hashCode());
         return json;
     }
 

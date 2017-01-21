@@ -72,12 +72,7 @@ public class Controller
         {
             System.out.println("/gameList");
             JSONObject json = new JSONObject();
-            games.forEach((key, value) ->
-                          {
-                              json.append(Util.JSON_KEY_GameHash, key)
-                                      .append(Util.JSON_KEY_GameData, value.toJson());
-                          });
-
+            games.forEach((key, value) -> json.append(Util.JSON_KEY_GameData, value.jsonHash()));
             System.out.println(json.toString());
             return json.toString();
         });

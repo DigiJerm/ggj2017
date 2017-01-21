@@ -36,6 +36,7 @@ public class Game implements Runnable
     public JSONObject toJson()
     {
         JSONObject json = new JSONObject();
+        json.put(Util.JSON_KEY_Game_HashCode, hashCode());
         JSONArray jsonArray = new JSONArray();
         for(Player player : players)
         {
@@ -72,7 +73,7 @@ public class Game implements Runnable
     public JSONObject jsonHash()
     {
         JSONObject json = new JSONObject();
-        json.put(Util.JSON_KEY_GameHash, hashCode());
+        json.put(Util.JSON_KEY_Game_HashCode, hashCode());
         return json;
     }
 

@@ -30,8 +30,8 @@ function updateGameList(gameList)
 	if (gameList.length === 0)
 		template += "<li>No games found"
 	else {
-		for (var i = 0; i < gameList.hashCode.length; i++)
-			template += "<li><a href='game.html?gameHash=" + gameList.hashCode[i] + "'>Game " + (i + 1) + "</a>";
+		for (var i = 0; i < gameList.gameData.length; i++)
+			template += "<li><a href='game.html?gameHash=" + gameList.gameData[i].gameHash + "'>Game " + (i + 1) + "</a>";
 	}
 	template += "</ul>";
 	document.getElementById("gameListPanel").innerHTML = template;
@@ -59,5 +59,5 @@ function createGame()
 
 function handleGameCreated(xhr)
 {
-	window.location = "game.html?gameHash=" + xhr.response.hashCode;
+	window.location = "game.html?gameHash=" + xhr.response.gameHash;
 }
