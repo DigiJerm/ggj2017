@@ -63,18 +63,18 @@ public class Game implements Runnable
     @Override
     public void run()
     {
-        boolean areAllPlayersReady = players.stream().noneMatch(x -> x.hasRequestedPause);
-        while(areAllPlayersReady)
+        //boolean areAllPlayersReady = players.stream().noneMatch(x -> x.hasRequestedPause);
+        while(true)
         {
             players.forEach(Player::update);
             lines.forEach(Line::update);
 
             try{
-                Thread.sleep(1000/60);
+                Thread.sleep(1000);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
-            areAllPlayersReady = players.stream().allMatch(x -> x.hasRequestedPause);
+            //areAllPlayersReady = players.stream().allMatch(x -> x.hasRequestedPause);
         }
     }
 

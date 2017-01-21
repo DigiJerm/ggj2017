@@ -110,10 +110,11 @@ public class Controller
 
         Spark.put("/game/submit/:gameHash/:playerHash", (request, response) ->
         {
-            System.out.println("/submit/"+request.params(":gameHash") +"/"+ request.params(":playerHash"));
+            System.out.println("/game/submit/"+request.params(":gameHash") +"/"+ request.params(":playerHash"));
             System.out.println("\t"+request.body());
             JSONObject jsonObject = new JSONObject(request.body());
-            if(jsonObject.get(Util.JSON_KEY_Controller_Action).equals(Util.JSON_VALUE_Controller_Action_Pulse))
+            if(jsonObject.get(Util.JSON_KEY_Controller_Action).equals(Util.JSON_VALUE_Controller_Action_Pulse) ||
+               jsonObject.get(Util.JSON_KEY_Controller_Action).equals(Util.JSON_VALUE_Controller_Action_Charge))
             {
                 Game game = games.get(Integer.parseInt(request.params(":gameHash")));
                 if(game != null)
@@ -142,7 +143,7 @@ public class Controller
             games.put(game.hashCode(), game);
             JSONObject gameData = game.jsonHash();
             System.out.println("\t"+gameData);
-            game.run();
+            new Thread(game).start();
             return gameData;
         });
 

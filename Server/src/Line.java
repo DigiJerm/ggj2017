@@ -1,5 +1,7 @@
 import org.json.JSONObject;
 
+import java.util.Random;
+
 /**
  * Created by Atraxi on 21/01/2017.
  */
@@ -14,6 +16,11 @@ public class Line
     public Line(int gameWidth, Player player0, Player player1)
     {
         this.pointSize = new int[gameWidth];
+        Random random = new Random();
+        for(int index = 0; index < gameWidth; index++)
+        {
+            pointSize[index] = random.nextInt(900) - 450;
+        }
         this.pointDirectionIsLeft = new boolean[gameWidth];
         this.player0 = player0;
         player0.addLine(this);
@@ -25,7 +32,11 @@ public class Line
     {
         int[] newPointSize = new int[pointSize.length];
         boolean[] newPointDirectionIsLeft = new boolean[pointDirectionIsLeft.length];
-
+//        Random random = new Random();
+//        for(int index = 0; index < pointSize.length; index++)
+//        {
+//            pointSize[index] = random.nextInt(900) - 450;
+//        }
         for(int index = 0; index < pointSize.length; index++)
         {
             if(pointDirectionIsLeft[index])
@@ -36,14 +47,28 @@ public class Line
                 }
                 else
                 {
-                    //newPointSize[index-1] =
+                    newPointSize[index-1] = pointSize[index];
+                    newPointDirectionIsLeft[index-1] = true;
+                }
+            }
+            else
+            {
+                if(index == pointSize.length-1)
+                {
+                    System.err.println("Player <- Wins");
+                }
+                else
+                {
+                    newPointSize[index+1] = pointSize[index];
+                    newPointDirectionIsLeft[index+1] = false;
                 }
             }
         }
 
         synchronized(this)
         {
-
+            pointSize = newPointSize;
+            pointDirectionIsLeft = newPointDirectionIsLeft;
         }
     }
 

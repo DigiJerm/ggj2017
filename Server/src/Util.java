@@ -22,4 +22,5 @@ public class Util
     public static final String JSON_KEY_Controller_Action = "action";
 
     public static final String JSON_VALUE_Controller_Action_Pulse = "pulse";
+    public static final String JSON_VALUE_Controller_Action_Charge = "charge";
 }
