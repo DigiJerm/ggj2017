@@ -1,5 +1,6 @@
-function Game()
+function Game(gameHash)
 {
+	this.gameHash = gameHash;
 	this.line = new Line();
 }
 
