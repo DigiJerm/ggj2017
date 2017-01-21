@@ -27,7 +27,7 @@ function handleGameList(xhr)
 function updateGameList(gameList)
 {
 	var template = "<ul>";
-	if (gameList.length === 0)
+	if (gameList.gameData === undefined || gameList.gameData.length === 0)
 		template += "<li>No games found"
 	else {
 		for (var i = 0; i < gameList.gameData.length; i++) {
