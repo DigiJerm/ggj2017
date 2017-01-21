@@ -12,6 +12,7 @@ window.onload = function()
 {
 	var gameHash = parseInt(getParameterByName("gameHash"));
 	var playerHash = parseInt(getParameterByName("playerHash"));
+	var playerIndex = parseInt(getParameterByName("playerIndex"));
 
 	var canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
@@ -19,7 +20,7 @@ window.onload = function()
 	window.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
 	window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
 
-	game = new Game(gameHash, playerHash);
+	game = new Game(gameHash, playerHash, playerIndex);
 
 	game.render();
 	window.setInterval(handleFrame, 50);

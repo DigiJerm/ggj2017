@@ -1,7 +1,8 @@
-function Game(gameHash, playerHash)
+function Game(gameHash, playerHash, playerIndex)
 {
 	this.gameHash = gameHash;
 	this.playerHash = playerHash;
+	this.playerIndex = playerIndex;
 	this.line = new Line();
 	this.charge = 0;
 	this.chargeAnimation = [];
@@ -56,8 +57,13 @@ Game.prototype.render = function()
 	var maxFrame = 2;
 	if (this.charge !== 0)
 		maxFrame = Math.floor((this.charge - 1) / 3) + 3;
-	for (var i = maxFrame; i >= 0; i--)
-		context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 148, 4, 210, 210);
+	const chargeSize = 250;
+	for (var i = maxFrame; i >= 0; i--) {
+		if (this.playerIndex === 0)
+			context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 253 - chargeSize / 2, 140 - chargeSize / 2, chargeSize, chargeSize);
+		else
+			context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 1920 - 253 - chargeSize / 2, 900 - 140 - chargeSize / 2, chargeSize, chargeSize);
+	}
 };
 
 
