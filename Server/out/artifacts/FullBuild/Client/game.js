@@ -22,7 +22,8 @@ Game.prototype.update = function()
 		if (this.charge < 45)
 			this.charge++;
 	} else {
-		this.pulse();
+		if (this.charge !== 0)
+			this.pulse();
 		this.charge = 0;
 	}
 };
@@ -62,7 +63,7 @@ Game.prototype.render = function()
 
 
 Game.prototype.pulse = function() {
-	/*var xhr = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(x) {
 		return function() {
 			if (x.readyState == XMLHttpRequest.DONE) {
@@ -73,5 +74,5 @@ Game.prototype.pulse = function() {
 	}(xhr);
 	xhr.open("PUT", "/game/submit/" + this.gameHash + "/" + this.playerHash);
 	xhr.responseType = "json";
-	xhr.send(JSON.stringify({ action: "pulse", amount: this.charge }));*/
+	xhr.send(JSON.stringify({ action: "pulse", amount: this.charge }));
 };
