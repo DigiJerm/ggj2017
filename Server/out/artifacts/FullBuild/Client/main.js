@@ -21,13 +21,60 @@ window.onload = function()
 	window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
 
 	game = new Game(gameHash, playerHash, playerIndex);
-
-	game.render();
-	window.setInterval(handleFrame, 50);
 };
 
 function handleFrame()
 {
 	game.update();
 	game.render();
+}
+
+
+
+var numImages = 0;
+var numLoadedImages = 0;
+var preLoadEnded = false;
+var gameRunning = false;
+
+function preLoadImage(url)
+{
+	var img = new Image();
+	numImages++;
+	img.onload = function() {
+		numLoadedImages++;
+		imageLoaded();
+	};
+	img.src = url;
+	return img;
+}
+
+
+
+function preLoadEnd()
+{
+	preLoadEnded = true;
+	imageLoaded();
+}
+
+
+
+function imageLoaded()
+{
+	if (!preLoadEnded)
+		return;
+	if (numLoadedImages === numImages)
+	{
+		gameRunning = true;
+		document.getElementById("loadingOverlay").style.display = "none";
+		document.getElementById("canvas").style.display = "block";
+		startGame();
+	}
+}
+
+
+
+function startGame()
+{
+	game.render();
+	window.setInterval(handleFrame, 50);
 }

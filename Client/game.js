@@ -6,13 +6,13 @@ function Game(gameHash, playerHash, playerIndex)
 	this.line = new Line();
 	this.charge = 0;
 	this.chargeAnimation = [];
-	this.backgroundImage = new Image();
-	this.backgroundImage.src = "Assets/Background.png";
+	this.backgroundImage = preLoadImage("Assets/Background.png");
 	for (var i = 0; i < 18; i++) {
 		var image = new Image();
 		image.src = "Assets/ExplosionImplosionAnimation/" + (i + 1) + ".png";
 		this.chargeAnimation.push(image);
 	}
+	preLoadEnd();
 }
 
 
