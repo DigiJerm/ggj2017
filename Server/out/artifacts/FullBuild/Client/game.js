@@ -22,7 +22,8 @@ Game.prototype.update = function()
 		if (this.charge < 45)
 			this.charge++;
 	} else {
-		this.pulse();
+		if (this.charge !== 0)
+			this.pulse();
 		this.charge = 0;
 	}
 };
