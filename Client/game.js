@@ -77,7 +77,7 @@ Game.prototype.sendCharge = function() {
 		return function() {
 			if (x.readyState == XMLHttpRequest.DONE) {
 				if (x.status !== 200)
-					alert("Error :( Can't send charge to server :(");
+					console.log("Error :( Can't send charge to server :(");
 			}
 		};
 	}(xhr);
@@ -94,7 +94,7 @@ Game.prototype.pulse = function() {
 		return function() {
 			if (x.readyState == XMLHttpRequest.DONE) {
 				if (x.status !== 200)
-					alert("Error :( Can't send data to server :(");
+					console.log("Error :( Can't send data to server :(");
 			}
 		};
 	}(xhr);
@@ -113,7 +113,7 @@ Game.prototype.loadState = function () {
 				if (x.status === 200)
 					g.handleStateLoaded(x);
 				else
-					alert("Error :( Can't load data from server :(");
+					console.log("Error :( Can't load data from server :(");
 			}
 		};
 	}(xhr, this);
