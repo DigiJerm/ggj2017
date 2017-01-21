@@ -30,13 +30,16 @@ public class Line
         {
             if(pointDirectionIsLeft.get(index))
             {
-                //newPointDirectionIsLeft =
+                newPointDirectionIsLeft.set(index, !(Math.abs(pointSize.get(index - 1)) >= Math.abs(pointSize.get(index))));
+                newPointSize.set(index - 1, pointSize.get(index) + pointSize.get(index - 1));
             }
             else
             {
-
+                newPointDirectionIsLeft.set(index, Math.abs(pointSize.get(index + 1)) >= Math.abs(pointSize.get(index)));
+                newPointSize.set(index + 1, pointSize.get(index) + newPointSize.get(index + 1));
             }
         }
+
         synchronized(this)
         {
 

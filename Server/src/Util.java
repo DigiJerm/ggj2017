@@ -17,4 +17,5 @@ public class Util
     public static final String JSON_KEY_Player_HashCode = "playerHash";
     public static final String JSON_KEY_Line_HashCode = "lineHash";
     public static final String JSON_KEY_Game_HashCode = "gameHash";
+    public static final String JSON_KEY_Game_PlayerList = "gamePlayers";
 }
