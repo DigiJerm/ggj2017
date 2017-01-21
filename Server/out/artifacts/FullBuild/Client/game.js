@@ -4,6 +4,8 @@ function Game(gameHash)
 	this.line = new Line();
 	this.charge = 0;
 	this.chargeAnimation = [];
+	this.backgroundImage = new Image();
+	this.backgroundImage.src = "Assets/Background.png";
 	for (var i = 0; i < 18; i++) {
 		var image = new Image();
 		image.src = "Assets/ExplosionImplosionAnimation/" + (i + 1) + ".png";
@@ -29,15 +31,18 @@ Game.prototype.render = function()
 {
 	// clear background
 	context.fillStyle = "#ffffff";
-	context.fillRect(0, 0, 800, 600);
+	context.fillRect(0, 0, 1920, 900);
+	context.globalAlpha = 0.8;
+	context.drawImage(this.backgroundImage, 0, 0, 1920, 900);
+	context.globalAlpha = 1.0;
 
-	// draw line
-	context.strokeStyle = "#000000";
+	// draw conduit
+	context.strokeStyle = "#DD1E08";
 	context.lineWidth = 3;
 	context.beginPath();
-	context.moveTo(800 / (this.line.NumPoints - 1) * 0, 300 + this.line.Offsets[0]);
+	context.moveTo(1920 / (this.line.NumPoints - 1) * 0, 450 + this.line.Offsets[0]);
 	for (var i = 1; i < this.line.NumPoints; i++)
-		context.lineTo(800 / (this.line.NumPoints - 1) * i, 300 + this.line.Offsets[i]);
+		context.lineTo(1920 / (this.line.NumPoints - 1) * i, 450 + this.line.Offsets[i]);
 	context.stroke();
 
 	// draw charger
@@ -45,5 +50,5 @@ Game.prototype.render = function()
 	if (this.charge !== 0)
 		maxFrame = Math.floor((this.charge - 1) / 3) + 3;
 	for (var i = maxFrame; i >= 0; i--)
-		context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 30, 30, 150, 150);
+		context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 150, 4, 210, 210);
 };
