@@ -54,7 +54,7 @@ public class Controller
             System.out.println("\t"+request.body());
             return "{\"data\":\"received\"}";//games.get(request.params(":gameHash")).playerUpdate().toString();
         });
-        
+
         Spark.post("/create/submit", (request, response) ->
         {
             System.out.println("/create/submit/"+request.params(":gamehash") +"/"+ request.params(":playerIndex"));
@@ -68,6 +68,17 @@ public class Controller
         {
             System.out.println("/create");
             return createHTML;
+        });
+
+        Spark.get("/gameList", (request, response) ->
+        {
+            JSONObject json = new JSONObject();
+            games.forEach((key, value) ->
+                          {
+                              json.append(Util.JSON_KEY_GameHash, key)
+                                      .append(Util.JSON_KEY_GameData, value.toJson());
+                          });
+            return json.toString();
         });
 
         Spark.get("/", (request, response) ->
