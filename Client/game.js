@@ -3,6 +3,12 @@ function Game(gameHash)
 	this.gameHash = gameHash;
 	this.line = new Line();
 	this.charge = 0;
+	this.chargeAnimation = [];
+	for (var i = 0; i < 18; i++) {
+		var image = new Image();
+		image.src = "Assets/ExplosionImplosionAnimation/" + (i + 1) + ".png";
+		this.chargeAnimation.push(image);
+	}
 }
 
 
@@ -10,6 +16,7 @@ function Game(gameHash)
 Game.prototype.update = function()
 {
 	if (Key.isDown(Key.SPACE)) {
+		if (this.charge < 45)
 		this.charge++;
 	} else {
 		this.charge = 0;
@@ -34,10 +41,9 @@ Game.prototype.render = function()
 	context.stroke();
 
 	// draw charger
-	if (this.charge !== 0) {
-		context.beginPath();
-		context.rect(30, 100 - this.charge * 3, 70, this.charge * 3);
-		context.fillStyle = "#20f060";
-		context.fill();
-	}
+	var maxFrame = 2;
+	if (this.charge !== 0)
+		maxFrame = Math.floor((this.charge - 1) / 3) + 3;
+	for (var i = maxFrame; i >= 0; i--)
+		context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 30, 30, 150, 150);
 };
