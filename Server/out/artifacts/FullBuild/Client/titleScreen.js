@@ -56,7 +56,7 @@ function createGame()
 	}(xhr);
 	xhr.open("POST", "/create/submit");
 	xhr.responseType = "json";
-	xhr.send(JSON.stringify({ playerCount: 2, gameWidth: 30, gameHeight: 30 }));
+	xhr.send(JSON.stringify({ playerCount: 2, gameWidth: 500, gameHeight: 900 }));
 }
 
 function handleGameCreated(xhr)

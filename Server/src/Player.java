@@ -14,7 +14,7 @@ public class Player
     public Player()
     {
         this.health = 0;
-       this.linkedLines = new ArrayList<>(2);
+        this.linkedLines = new ArrayList<>(2);
     }
 
     public JSONObject toJson()
@@ -37,9 +37,13 @@ public class Player
 
     public void update()
     {
+        //Moved to client
+//        if(health > 0) health -= 1;
+//        else if(health < 0) health += 1;
+
         for(Line line : linkedLines)
         {
-            line.playerAction(health, this);
+            line.playerUpdate(health, this);
         }
     }
 }

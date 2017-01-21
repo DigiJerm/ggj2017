@@ -70,7 +70,7 @@ public class Game implements Runnable
             lines.forEach(Line::update);
 
             try{
-                Thread.sleep(1000);
+                Thread.sleep(1000 / 60);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
