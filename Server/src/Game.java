@@ -7,17 +7,24 @@ import java.util.ArrayList;
  */
 public class Game implements Runnable
 {
-    private int gridHeight;
+    private int gameHeight;
     private ArrayList<Integer> points;
     private ArrayList<Integer> playerPositions;
     private ArrayList<Boolean> hasPlayerRequestedPause;
 
-    public Game(int playerCount, int gridWidth, int gridHeight)
+    public Game(int playerCount, int gameWidth, int gameHeight)
     {
-        this.gridHeight = gridHeight;
+        this.gameHeight = gameHeight;
         this.playerPositions = new ArrayList<>(playerCount);
         this.hasPlayerRequestedPause = new ArrayList<>(playerCount);
-        this.points = new ArrayList<>(gridWidth);
+        this.points = new ArrayList<>(gameWidth);
+    }
+
+    public Game(JSONObject jsonObject)
+    {
+        this(jsonObject.getInt(Util.JSON_KEY_PlayerCount),
+             jsonObject.getInt(Util.JSON_KEY_GameWidth),
+             jsonObject.getInt(Util.JSON_KEY_GameHeight));
     }
 
     public JSONObject toJson()
@@ -59,5 +66,12 @@ public class Game implements Runnable
             }
             areAllPlayersReady = hasPlayerRequestedPause.stream().allMatch(x -> x);
         }
+    }
+
+    public JSONObject jsonHash()
+    {
+        JSONObject json = new JSONObject();
+        json.append(Util.JSON_KEY_GameHash, hashCode());
+        return null;
     }
 }

@@ -2,6 +2,7 @@
  * Created by Atraxi on 20/01/2017.
  */
 
+import org.json.JSONObject;
 import spark.Spark;
 import spark.route.RouteOverview;
 
@@ -12,7 +13,7 @@ import java.util.HashMap;
 
 public class Controller
 {
-    private static HashMap<String, Game> games = new HashMap<>();
+    private static HashMap<Integer, Game> games = new HashMap<>();
     private static final int PORT = 4321;
 
     private static String indexHTML;
@@ -43,42 +44,37 @@ public class Controller
         Spark.get("/load/:gameHash", (request, response) ->
         {
             System.out.println("/load/"+request.params(":gamehash"));
-            return "{\"data\":\"test\"}";//games.get(request.params(":gameHash")).toJson().toString();
+            return games.get(Integer.parseInt(request.params(":gameHash")))
+                        .toJson().toString();
         });
 
-        Spark.put("/submit/:gameHash/:playerIndex", (request, response) ->
+        Spark.put("/game/submit/:gameHash/:playerIndex", (request, response) ->
         {
             System.out.println("/submit/"+request.params(":gamehash") +"/"+ request.params(":playerIndex"));
-            request.params().forEach((x, y) -> System.out.println("\t"+ x + "||" + y));
             System.out.println("\t"+request.body());
-            for(String string : request.splat())
-            {
-                System.out.println(string);
-            }
             return "{\"data\":\"received\"}";//games.get(request.params(":gameHash")).playerUpdate().toString();
         });
-
-        Spark.post("/submit/:gameHash/:playerIndex", (request, response) ->
-        {
-            System.out.println("/submit/"+request.params(":gamehash") +"/"+ request.params(":playerIndex"));
-            request.params().forEach((x, y) -> System.out.println("\t"+ x + "||" + y));
-            System.out.println("\t"+request.body());
-            for(String string : request.splat())
-            {
-                System.out.println(string);
-            }
-            return "{\"data\":\"received\"}";//games.get(request.params(":gameHash")).playerUpdate().toString();
-        });
-
+        
         Spark.post("/create/submit", (request, response) ->
         {
-
-            return "{\"data\":\"received\"}";
+            System.out.println("/create/submit/"+request.params(":gamehash") +"/"+ request.params(":playerIndex"));
+            System.out.println(request.body());
+            Game game = new Game(new JSONObject(request.body()));
+            games.put(game.hashCode(), game);
+            return game.jsonHash();
         });
 
-        Spark.get("/create", (request, response) -> createHTML);
+        Spark.get("/create", (request, response) ->
+        {
+            System.out.println("/create");
+            return createHTML;
+        });
 
-        Spark.get("/", (request, response) -> indexHTML);
+        Spark.get("/", (request, response) ->
+        {
+            System.out.println("/");
+            return indexHTML;
+        });
 
         System.out.println("Server initialization complete. Listening on port " + PORT);
     }
