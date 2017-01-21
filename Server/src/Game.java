@@ -74,6 +74,10 @@ public class Game implements Runnable
     {
         JSONObject json = new JSONObject();
         json.put(Util.JSON_KEY_Game_HashCode, hashCode());
+        for(Player player : players)
+        {
+            json.append(Util.JSON_KEY_Game_PlayerList, player.hashCode());
+        }
         return json;
     }
 
