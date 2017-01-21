@@ -1,5 +1,6 @@
 window.onload = function()
 {
+	document.getElementById("createGameBtn").addEventListener("click", createGame);
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(x) {
 		return function() {
@@ -16,12 +17,11 @@ window.onload = function()
 	xhr.open("GET", "/gameList");
 	xhr.responseType = "json";
 	xhr.send();
-
 };
 
 function handleGameList(xhr)
 {
-	console.log(xhr.response);
+	updateGameList(xhr.response);
 }
 
 function updateGameList(gameList)
@@ -30,9 +30,34 @@ function updateGameList(gameList)
 	if (gameList.length === 0)
 		template += "<li>No games found"
 	else {
-		for (var i = 0; i < gameList.length; i++)
-			template += "<li>" + gameList[i].name + " (Players: " + gameList[i].numPlayers + ")";
+		for (var i = 0; i < gameList.hashCode.length; i++)
+			template += "<li><a href='game.html?gameHash=" + gameList.hashCode[i] + "'>Game " + (i + 1) + "</a>";
 	}
 	template += "</ul>";
 	document.getElementById("gameListPanel").innerHTML = template;
+}
+
+function createGame()
+{
+	var gameName = document.getElementById("gameNameTxt").value;
+
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(x) {
+		return function() {
+			if (x.readyState == XMLHttpRequest.DONE) {
+				if (x.status == 200)
+					handleGameCreated(x);
+				else
+					alert("Error :( Can't create game :(");
+			}
+		};
+	}(xhr);
+	xhr.open("POST", "/create/submit");
+	xhr.responseType = "json";
+	xhr.send(JSON.stringify({ playerCount: 2, gameWidth: 30, gameHeight: 30 }));
+}
+
+function handleGameCreated(xhr)
+{
+	window.location = "game.html?gameHash=" + xhr.response.hashCode[0];
 }
