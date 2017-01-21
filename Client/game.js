@@ -1,6 +1,7 @@
-function Game(gameHash)
+function Game(gameHash, playerHash)
 {
 	this.gameHash = gameHash;
+	this.playerHash = playerHash;
 	this.line = new Line();
 	this.charge = 0;
 	this.chargeAnimation = [];
@@ -19,8 +20,9 @@ Game.prototype.update = function()
 {
 	if (Key.isDown(Key.SPACE)) {
 		if (this.charge < 45)
-		this.charge++;
+			this.charge++;
 	} else {
+		this.pulse();
 		this.charge = 0;
 	}
 };
@@ -55,4 +57,21 @@ Game.prototype.render = function()
 		maxFrame = Math.floor((this.charge - 1) / 3) + 3;
 	for (var i = maxFrame; i >= 0; i--)
 		context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 148, 4, 210, 210);
+};
+
+
+
+Game.prototype.pulse = function() {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(x) {
+		return function() {
+			if (x.readyState == XMLHttpRequest.DONE) {
+				if (x.status !== 200)
+					alert("Error :( Can't send data to server :(");
+			}
+		};
+	}(xhr);
+	xhr.open("PUT", "/game/submit/" + this.gameHash + "/" + this.playerHash);
+	xhr.responseType = "json";
+	xhr.send(JSON.stringify({ action: "pulse", amount: this.charge }));
 };
