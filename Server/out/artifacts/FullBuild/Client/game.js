@@ -1,6 +1,7 @@
-function Game(gameHash)
+function Game(gameHash, playerHash)
 {
 	this.gameHash = gameHash;
+	this.playerHash = playerHash;
 	this.line = new Line();
 	this.charge = 0;
 	this.chargeAnimation = [];
