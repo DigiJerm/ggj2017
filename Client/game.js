@@ -20,8 +20,10 @@ function Game(gameHash, playerHash, playerIndex)
 Game.prototype.update = function()
 {
 	if (Key.isDown(Key.SPACE)) {
-		if (this.charge < 45)
+		if (this.charge < 45) {
 			this.charge++;
+			this.sendCharge();
+		}
 	} else {
 		if (this.charge !== 0)
 			this.pulse();
@@ -64,6 +66,23 @@ Game.prototype.render = function()
 		else
 			context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 1920 - 253 - chargeSize / 2, 900 - 140 - chargeSize / 2, chargeSize, chargeSize);
 	}
+};
+
+
+
+Game.prototype.sendCharge = function() {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(x) {
+		return function() {
+			if (x.readyState == XMLHttpRequest.DONE) {
+				if (x.status !== 200)
+					alert("Error :( Can't send charge to server :(");
+			}
+		};
+	}(xhr);
+	xhr.open("PUT", "/game/submit/" + this.gameHash + "/" + this.playerHash);
+	xhr.responseType = "json";
+	xhr.send(JSON.stringify({ action: "charge", amount: this.charge }));
 };
 
 
