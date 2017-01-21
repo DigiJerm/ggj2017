@@ -41,7 +41,7 @@ function updateGameList(gameList)
 
 function createGame()
 {
-	var gameName = document.getElementById("gameNameTxt").value;
+	//var gameName = document.getElementById("gameNameTxt").value;
 
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(x) {
