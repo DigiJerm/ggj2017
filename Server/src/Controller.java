@@ -17,7 +17,6 @@ public class Controller
     private static final int PORT = 4321;
 
     private static String indexHTML;
-    private static String createHTML;
 
     public static void main(String[] args) throws IOException
     {
@@ -28,7 +27,6 @@ public class Controller
     private static void loadPageData() throws IOException
     {
         indexHTML = new String(Files.readAllBytes(Paths.get("Client\\index.html")));
-        createHTML = new String(Files.readAllBytes(Paths.get("Client\\create.html")));
     }
 
     private static void sparkInitialization()
@@ -43,31 +41,28 @@ public class Controller
 
         Spark.get("/load/:gameHash", (request, response) ->
         {
-            System.out.println("/load/"+request.params(":gamehash"));
+            System.out.println("/load/"+request.params(":gameHash"));
             return games.get(Integer.parseInt(request.params(":gameHash")))
                         .toJson().toString();
         });
 
-        Spark.put("/game/submit/:gameHash/:playerIndex", (request, response) ->
+        Spark.put("/game/submit/:gameHash/:playerHash", (request, response) ->
         {
-            System.out.println("/submit/"+request.params(":gamehash") +"/"+ request.params(":playerIndex"));
+            System.out.println("/submit/"+request.params(":gameHash") +"/"+ request.params(":playerHash"));
             System.out.println("\t"+request.body());
-            return "{\"data\":\"received\"}";//games.get(request.params(":gameHash")).playerUpdate().toString();
+            JSONObject jsonObject = new JSONObject(request.body());
+            games.get(Integer.parseInt(request.params(":gameHash")))
+                 .playerUpdate(Integer.parseInt(request.params(":playerHash")), jsonObject);
+            return "{\"data\":\"received\"}";
         });
 
         Spark.post("/create/submit", (request, response) ->
         {
-            System.out.println("/create/submit/"+request.params(":gamehash") +"/"+ request.params(":playerIndex"));
+            System.out.println("/create/submit");
             System.out.println(request.body());
             Game game = new Game(new JSONObject(request.body()));
             games.put(game.hashCode(), game);
             return game.jsonHash();
-        });
-
-        Spark.get("/create", (request, response) ->
-        {
-            System.out.println("/create");
-            return createHTML;
         });
 
         Spark.get("/gameList", (request, response) ->

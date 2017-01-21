@@ -1,3 +1,4 @@
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -8,16 +9,19 @@ import java.util.ArrayList;
 public class Game implements Runnable
 {
     private int gameHeight;
-    private ArrayList<Integer> points;
-    private ArrayList<Integer> playerPositions;
-    private ArrayList<Boolean> hasPlayerRequestedPause;
+    private ArrayList<Line> lines;
+    private ArrayList<Player> players;
 
     public Game(int playerCount, int gameWidth, int gameHeight)
     {
         this.gameHeight = gameHeight;
-        this.playerPositions = new ArrayList<>(playerCount);
-        this.hasPlayerRequestedPause = new ArrayList<>(playerCount);
-        this.points = new ArrayList<>(gameWidth);
+        this.players = new ArrayList<>(playerCount);
+        this.lines = new ArrayList<>(playerCount);
+        for(int index = 0; index < lines.size() - 1; index++)
+        {
+            lines.set(index, new Line(gameWidth, players.get(index), players.get(index + 1)));
+        }
+        lines.set(lines.size(), new Line(gameWidth, players.get(lines.size()), players.get(0)));
     }
 
     public Game(JSONObject jsonObject)
@@ -30,48 +34,48 @@ public class Game implements Runnable
     public JSONObject toJson()
     {
         JSONObject json = new JSONObject();
-        json.append(Util.JSON_KEY_PlayerPosition, playerPositions);
-        json.append(Util.JSON_KEY_LinePosition, points);
+        JSONArray jsonArray = new JSONArray();
+        for(Player player : players)
+        {
+            jsonArray.put(player.toJson());
+        }
+        JSONArray jsonArray1 = new JSONArray();
+        for(Line line : lines)
+        {
+            jsonArray1.put(line.toJson());
+        }
+        json.put(Util.JSON_KEY_Players, jsonArray);
+        json.put(Util.JSON_KEY_LinePosition, jsonArray1);
 
         return json;
-    }
-
-    public JSONObject playerUpdate()
-    {
-
-
-
-        return toJson();
     }
 
     @Override
     public void run()
     {
-        boolean areAllPlayersReady = hasPlayerRequestedPause.stream().allMatch(x -> x);
+        boolean areAllPlayersReady = players.stream().allMatch(x -> x.hasRequestedPause);
         while(areAllPlayersReady)
         {
-            ArrayList<Integer> newPoints = new ArrayList<>(points.size());
+            lines.forEach(Line::update);
 
-            for(int index = 1; index < points.size() - 2; index++)
-            {
-
-            }
-            try
-            {
+            try{
                 Thread.sleep(1000/60);
-            }
-            catch(InterruptedException e)
-            {
+            }catch(InterruptedException e){
                 e.printStackTrace();
             }
-            areAllPlayersReady = hasPlayerRequestedPause.stream().allMatch(x -> x);
+            areAllPlayersReady = players.stream().allMatch(x -> x.hasRequestedPause);
         }
     }
 
     public JSONObject jsonHash()
     {
         JSONObject json = new JSONObject();
-        json.append(Util.JSON_KEY_GameHash, hashCode());
+        json.put(Util.JSON_KEY_GameHash, hashCode());
         return json;
+    }
+
+    public void playerUpdate(int i, JSONObject jsonObject)
+    {
+        players.get(i).update(jsonObject);
     }
 }
