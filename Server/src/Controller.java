@@ -53,9 +53,16 @@ public class Controller
             System.out.println("/submit/"+request.params(":gameHash") +"/"+ request.params(":playerHash"));
             System.out.println("\t"+request.body());
             JSONObject jsonObject = new JSONObject(request.body());
-            games.get(Integer.parseInt(request.params(":gameHash")))
-                 .playerUpdate(Integer.parseInt(request.params(":playerHash")), jsonObject);
-            return "{\"data\":\"received\"}";
+            if(jsonObject.get(Util.JSON_KEY_Controller_Action).equals(Util.JSON_VALUE_Controller_Action_Pulse))
+            {
+                games.get(Integer.parseInt(request.params(":gameHash")))
+                     .playerUpdate(Integer.parseInt(request.params(":playerHash")), jsonObject);
+                return "{\"data\":\"received\"}";
+            }
+            else
+            {
+                return "\"data\":\"unknown_type\"}";
+            }
         });
 
         Spark.post("/create/submit", (request, response) ->

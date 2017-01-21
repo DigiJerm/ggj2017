@@ -29,7 +29,7 @@ public class Player
     {
         for(Line line : linkedLines)
         {
-            line.playerAction(jsonObject.getInt("data"), this);
+            line.playerAction(jsonObject.getInt(Util.JSON_KEY_Player_Value), this);
         }
     }
 }

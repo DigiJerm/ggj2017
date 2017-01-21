@@ -28,16 +28,7 @@ public class Line
 
         for(int index = 1; index < pointSize.size() - 1; index++)
         {
-            if(pointDirectionIsLeft.get(index))
-            {
-                newPointDirectionIsLeft.set(index, !(Math.abs(pointSize.get(index - 1)) >= Math.abs(pointSize.get(index))));
-                newPointSize.set(index - 1, pointSize.get(index) + pointSize.get(index - 1));
-            }
-            else
-            {
-                newPointDirectionIsLeft.set(index, Math.abs(pointSize.get(index + 1)) >= Math.abs(pointSize.get(index)));
-                newPointSize.set(index + 1, pointSize.get(index) + newPointSize.get(index + 1));
-            }
+
         }
 
         synchronized(this)
@@ -45,6 +36,8 @@ public class Line
 
         }
     }
+
+    //private int getSumOfN
 
     public JSONObject toJson()
     {
