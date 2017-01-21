@@ -1,7 +1,5 @@
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 /**
  * Created by Atraxi on 21/01/2017.
  */
@@ -25,8 +23,8 @@ public class Line
 
     public void update()
     {
-        ArrayList<Integer> newPointSize = new ArrayList<>(pointSize.length);
-        ArrayList<Boolean> newPointDirectionIsLeft = new ArrayList<>(pointDirectionIsLeft.length);
+        int[] newPointSize = new int[pointSize.length];
+        boolean[] newPointDirectionIsLeft = new boolean[pointDirectionIsLeft.length];
 
         for(int index = 0; index < pointSize.length; index++)
         {
@@ -34,7 +32,11 @@ public class Line
             {
                 if(index == 0)
                 {
-                    //throw new Exce("Player1wins");
+                    System.err.println("Player -> Wins");
+                }
+                else
+                {
+                    //newPointSize[index-1] =
                 }
             }
         }
