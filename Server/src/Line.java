@@ -7,28 +7,36 @@ import java.util.ArrayList;
  */
 public class Line
 {
-    private ArrayList<Integer> pointSize;
-    private ArrayList<Boolean> pointDirectionIsLeft;
+    private int[] pointSize;
+    private boolean[] pointDirectionIsLeft;
     private Player player0;
     private Player player1;
 
 
     public Line(int gameWidth, Player player0, Player player1)
     {
-        this.pointSize = new ArrayList<>(gameWidth);
-        this.pointDirectionIsLeft = new ArrayList<>(gameWidth);
+        this.pointSize = new int[gameWidth];
+        this.pointDirectionIsLeft = new boolean[gameWidth];
         this.player0 = player0;
+        player0.addLine(this);
         this.player1 = player1;
+        player1.addLine(this);
     }
 
     public void update()
     {
-        ArrayList<Integer> newPointSize = new ArrayList<>(pointSize.size());
-        ArrayList<Boolean> newPointDirectionIsLeft = new ArrayList<>(pointDirectionIsLeft.size());
+        ArrayList<Integer> newPointSize = new ArrayList<>(pointSize.length);
+        ArrayList<Boolean> newPointDirectionIsLeft = new ArrayList<>(pointDirectionIsLeft.length);
 
-        for(int index = 1; index < pointSize.size() - 1; index++)
+        for(int index = 0; index < pointSize.length; index++)
         {
-
+            if(pointDirectionIsLeft[index])
+            {
+                if(index == 0)
+                {
+                    //throw new Exce("Player1wins");
+                }
+            }
         }
 
         synchronized(this)
@@ -56,13 +64,15 @@ public class Line
         {
             if(source == player0)
             {
-                pointDirectionIsLeft.set(0, !(Math.abs(data) >= Math.abs(pointSize.get(0))));
-                pointSize.set(0, pointSize.get(0) + data);
+                pointDirectionIsLeft[0] = pointDirectionIsLeft[0] &
+                                          Math.abs(data) < Math.abs(pointSize[0]);
+                pointSize[0] = pointSize[0] + data;
             }
             else if(source == player1)
             {
-                pointDirectionIsLeft.set(pointDirectionIsLeft.size(), Math.abs(data) >= Math.abs(pointSize.get(pointSize.size() - 1)));
-                pointSize.set(pointSize.size(), pointSize.get(pointSize.size() - 1) + data);
+                pointDirectionIsLeft[pointDirectionIsLeft.length - 1] = pointDirectionIsLeft[pointDirectionIsLeft.length - 1] |
+                                                                      Math.abs(data) >= Math.abs(pointSize[pointSize.length - 1]);
+                pointSize[pointSize.length - 1] = pointSize[pointSize.length - 1] + data;
             }
         }
     }

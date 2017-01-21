@@ -25,11 +25,21 @@ public class Player
         return jsonObject;
     }
 
-    public void update(JSONObject jsonObject)
+    public void addLine(Line line)
+    {
+        linkedLines.add(line);
+    }
+
+    public void setCharge(JSONObject jsonObject)
+    {
+        health = jsonObject.getInt(Util.JSON_KEY_Player_Value);
+    }
+
+    public void update()
     {
         for(Line line : linkedLines)
         {
-            line.playerAction(jsonObject.getInt(Util.JSON_KEY_Player_Value), this);
+            line.playerAction(health, this);
         }
     }
 }

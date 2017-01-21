@@ -49,7 +49,7 @@ public class Controller
                 if(player != null)
                 {
                     String output = player.toJson().toString();
-                    System.out.println(output);
+                    System.out.println("\t"+output);
                     return output;
                 }
                 else
@@ -75,7 +75,7 @@ public class Controller
                 if(line != null)
                 {
                     String output = line.toJson().toString();
-                    System.out.println(output);
+                    System.out.println("\t"+output);
                     return output;
                 }
                 else
@@ -98,7 +98,7 @@ public class Controller
             if(game != null)
             {
                 String output = game.toJson().toString();
-                System.out.println(output);
+                System.out.println("\t"+output);
                 return output;
             }
             else
@@ -137,11 +137,13 @@ public class Controller
         Spark.post("/create/submit", (request, response) ->
         {
             System.out.println("/create/submit");
-            System.out.println(request.body());
+            System.out.println("\t"+request.body());
             Game game = new Game(new JSONObject(request.body()));
             games.put(game.hashCode(), game);
-            System.out.println(game.jsonHash());
-            return game.jsonHash();
+            JSONObject gameData = game.jsonHash();
+            System.out.println("\t"+gameData);
+            game.run();
+            return gameData;
         });
 
         Spark.get("/gameList", (request, response) ->
@@ -149,7 +151,7 @@ public class Controller
             System.out.println("/gameList");
             JSONObject json = new JSONObject();
             games.forEach((key, value) -> json.append(Util.JSON_KEY_GameData, value.jsonHash()));
-            System.out.println(json.toString());
+            System.out.println("\t"+json.toString());
             return json.toString();
         });
 
@@ -161,7 +163,8 @@ public class Controller
 
         Spark.exception(Exception.class, (exception, request, response) ->
         {
-            System.err.println(request.url());
+            System.err.println("URL:"+request.url());
+            System.err.println("Body:"+request.body());
             exception.printStackTrace();
         });
 

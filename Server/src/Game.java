@@ -15,12 +15,19 @@ public class Game implements Runnable
     private Game(int playerCount, int gameWidth, int gameHeight)
     {
         this.gameHeight = gameHeight;
+
         this.players = new ArrayList<>(playerCount);
-        this.lines = new ArrayList<>(playerCount);
-        players.add(new Player());
-        for(int index = 0; index < playerCount - 1; index++)
+        for(int index = 0; index < playerCount; index++)
         {
             players.add(new Player());
+        }
+
+        int lineCount = playerCount;
+        lineCount = lineCount == 2 ? 1 : lineCount;
+        this.lines = new ArrayList<>(lineCount);
+
+        for(int index = 0; index < lineCount - 1; index++)
+        {
             lines.add(new Line(gameWidth, players.get(index), players.get(index + 1)));
         }
         lines.add(new Line(gameWidth, players.get(players.size()-1), players.get(0)));
@@ -48,7 +55,7 @@ public class Game implements Runnable
             jsonArray1.put(line.toJson());
         }
         json.put(Util.JSON_KEY_Players, jsonArray);
-        json.put(Util.JSON_KEY_LinePosition, jsonArray1);
+        json.put(Util.JSON_KEY_Game_Lines, jsonArray1);
 
         return json;
     }
@@ -59,6 +66,7 @@ public class Game implements Runnable
         boolean areAllPlayersReady = players.stream().noneMatch(x -> x.hasRequestedPause);
         while(areAllPlayersReady)
         {
+            players.forEach(Player::update);
             lines.forEach(Line::update);
 
             try{
@@ -83,7 +91,7 @@ public class Game implements Runnable
 
     public void playerUpdate(int hashCode, JSONObject jsonObject)
     {
-        getPlayerByHash(hashCode).update(jsonObject);
+        getPlayerByHash(hashCode).setCharge(jsonObject);
     }
 
     public Line getLineByHash(int hashcode)

@@ -3,7 +3,7 @@
  */
 public class Util
 {
-    public static final String JSON_KEY_LinePosition = "linePos";
+    public static final String JSON_KEY_Game_Lines = "lines";
     public static final String JSON_KEY_GameHeight = "gameHeight";
     public static final String JSON_KEY_GameWidth = "gameWidth";
     public static final String JSON_KEY_PlayerCount = "playerCount";
@@ -18,7 +18,7 @@ public class Util
     public static final String JSON_KEY_Line_HashCode = "lineHash";
     public static final String JSON_KEY_Game_HashCode = "gameHash";
     public static final String JSON_KEY_Game_PlayerList = "gamePlayers";
-    public static final String JSON_KEY_Player_Value = "value";
+    public static final String JSON_KEY_Player_Value = "amount";
     public static final String JSON_KEY_Controller_Action = "action";
 
     public static final String JSON_VALUE_Controller_Action_Pulse = "pulse";
