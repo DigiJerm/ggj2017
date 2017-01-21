@@ -72,6 +72,6 @@ public class Game implements Runnable
     {
         JSONObject json = new JSONObject();
         json.append(Util.JSON_KEY_GameHash, hashCode());
-        return null;
+        return json;
     }
 }
