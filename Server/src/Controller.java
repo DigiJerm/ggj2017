@@ -145,7 +145,7 @@ public class Controller
             Game game = new Game(new JSONObject(request.body()), gameCount);
             gameCount++;
             games.put(game.hashCode(), game);
-            JSONObject gameData = game.jsonHash();
+            JSONObject gameData = game.toJson();
             System.out.println("\t"+gameData);
             new Thread(game).start();
             return gameData;

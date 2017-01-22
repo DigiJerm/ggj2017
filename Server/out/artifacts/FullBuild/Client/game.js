@@ -155,8 +155,8 @@ Game.prototype.loadState = function () {
 
 
 Game.prototype.handleStateLoaded = function (xhr) {
-	for (var i = 0; i < xhr.response.players.length; i++) {
-		if (xhr.response.players[i].isDead) {
+	for (var i = 0; i < xhr.response.gamePlayers.length; i++) {
+		if (xhr.response.gamePlayers[i].isDead) {
 			this.gameEnded = true;
 			this.win = (i === this.playerIndex);
 		}

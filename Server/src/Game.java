@@ -57,7 +57,7 @@ public class Game implements Runnable
         {
             jsonArray1.put(line.toJson());
         }
-        json.put(Util.JSON_KEY_Players, jsonArray);
+        json.put(Util.JSON_KEY_Game_PlayerList, jsonArray);
         json.put(Util.JSON_KEY_Game_Lines, jsonArray1);
 
         return json;
@@ -74,7 +74,7 @@ public class Game implements Runnable
             lines.forEach(Line::update);
 
             try{
-                Thread.sleep(1000 / 30);
+                Thread.sleep(50);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }

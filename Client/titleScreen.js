@@ -60,5 +60,5 @@ function createGame()
 
 function handleGameCreated(xhr)
 {
-	window.location = "game.html?gameHash=" + xhr.response.gameHash + "&playerHash=" + xhr.response.gamePlayers[0] + "&playerIndex=0";
+	window.location = "game.html?gameHash=" + xhr.response.gameHash + "&playerHash=" + xhr.response.gamePlayers[0].playerHash + "&playerIndex=0";
 }
