@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import spark.Spark;
 import spark.route.RouteOverview;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -29,7 +30,7 @@ public class Controller
 
     private static void loadPageData() throws IOException
     {
-        indexHTML = new String(Files.readAllBytes(Paths.get("Client\\index.html")));
+        indexHTML = new String(Files.readAllBytes(Paths.get("Client" + File.separator+"index.html")));
     }
 
     private static void sparkInitialization()

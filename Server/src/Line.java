@@ -110,7 +110,7 @@ public class Line
     {
         JSONObject json = new JSONObject();
         json.put(Util.JSON_KEY_Line_Size, pointSize);
-        json.put(Util.JSON_KEY_Line_Direction, pointDirectionIsLeft);
+        //json.put(Util.JSON_KEY_Line_Direction, pointDirectionIsLeft);
         json.put(Util.JSON_KEY_Line_Player0, player0.hashCode());
         json.put(Util.JSON_KEY_Line_Player1, player1.hashCode());
         json.put(Util.JSON_KEY_Line_HashCode, hashCode());
