@@ -6,13 +6,15 @@ function Game(gameHash, playerHash, playerIndex)
 	this.line = new Line();
 	this.charge = 0;
 	this.chargeAnimation = [];
-	this.backgroundImage = new Image();
-	this.backgroundImage.src = "Assets/Background.png";
+	this.backgroundImage = preLoadImage("Assets/Background.png");
 	for (var i = 0; i < 18; i++) {
 		var image = new Image();
 		image.src = "Assets/ExplosionImplosionAnimation/" + (i + 1) + ".png";
 		this.chargeAnimation.push(image);
 	}
+	this.upArrowImage = preLoadImage("Assets/indicatorUp.png");
+	this.downArrowImage = preLoadImage("Assets/indicatorDown.png");
+	preLoadEnd();
 }
 
 
@@ -20,14 +22,25 @@ function Game(gameHash, playerHash, playerIndex)
 Game.prototype.update = function()
 {
 	this.loadState();
-	if (Key.isDown(Key.SPACE)) {
+	if (Key.isDown(Key.UP)) {
 		if (this.charge < 45) {
 			this.charge++;
 			this.sendCharge();
 		}
 	} else {
-		if (this.charge !== 0) {
+		if (this.charge > 0) {
 			this.charge--;
+			this.sendCharge();
+		}
+	}
+	if (Key.isDown(Key.DOWN)) {
+		if (this.charge > -45) {
+			this.charge--;
+			this.sendCharge();
+		}
+	} else {
+		if (this.charge < 0) {
+			this.charge++;
 			this.sendCharge();
 		}
 	}
@@ -59,8 +72,14 @@ Game.prototype.render = function()
 
 	// draw charger
 	var maxFrame = 2;
-	if (this.charge !== 0)
-		maxFrame = Math.floor((this.charge - 1) / 3) + 3;
+	const arrowSize = 160;
+	if (this.charge !== 0) {
+		maxFrame = Math.floor((Math.abs(this.charge) - 1) / 3) + 3;
+		if (this.playerIndex === 0)
+			context.drawImage(this.charge > 0 ? this.upArrowImage : this.downArrowImage, 480 - arrowSize / 2, 140 - arrowSize / 2, arrowSize, arrowSize);
+		else
+			context.drawImage(this.charge > 0 ? this.upArrowImage : this.downArrowImage, 1920 - 480 - arrowSize / 2, 900 - 140 - arrowSize / 2, arrowSize, arrowSize);
+	}
 	const chargeSize = 250;
 	for (var i = maxFrame; i >= 0; i--) {
 		if (this.playerIndex === 0)
