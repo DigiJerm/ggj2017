@@ -11,7 +11,7 @@ public class Line
     private boolean[] pointDirectionIsLeft;
     private Player player0;
     private Player player1;
-
+    private Random random = new Random();
 
     public Line(int gameWidth, Player player0, Player player1)
     {
@@ -52,6 +52,10 @@ public class Line
                             {//Moving right
                                 newPointDirectionIsLeft[index - 1] = false;
                             }
+                            else if(Math.abs(newPointSize[index - 1]) == Math.abs(pointSize[index]))
+                            {
+                                newPointDirectionIsLeft[index - 1] = random.nextBoolean();
+                            }
                             else
                             {
                                 System.err.println("direction unknown!!!!!!!!!!!!!!");
@@ -79,6 +83,10 @@ public class Line
                             else if(Math.abs(newPointSize[index + 1]) > Math.abs(pointSize[index]) && newPointDirectionIsLeft[index + 1])
                             {//Moving left
                                 newPointDirectionIsLeft[index + 1] = false;
+                            }
+                            else if(Math.abs(newPointSize[index + 1]) == Math.abs(pointSize[index]))
+                            {
+                                newPointDirectionIsLeft[index + 1] = random.nextBoolean();
                             }
                             else
                             {
@@ -134,7 +142,6 @@ public class Line
 
     public void setToRandom(int gameHeight)
     {
-        Random random = new Random();
         for(int index = 0; index < pointSize.length; index++)
         {
             pointSize[index] = random.nextInt(gameHeight) - gameHeight/2;

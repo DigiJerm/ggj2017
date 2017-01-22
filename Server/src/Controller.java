@@ -9,6 +9,7 @@ import spark.route.RouteOverview;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class Controller
@@ -17,6 +18,8 @@ public class Controller
     private static final int PORT = 4321;
 
     private static String indexHTML;
+
+    private static int gameCount = 0;
 
     public static void main(String[] args) throws IOException
     {
@@ -139,7 +142,8 @@ public class Controller
         {
             System.out.println("/create/submit");
             System.out.println("\t"+request.body());
-            Game game = new Game(new JSONObject(request.body()));
+            Game game = new Game(new JSONObject(request.body()), gameCount);
+            gameCount++;
             games.put(game.hashCode(), game);
             JSONObject gameData = game.jsonHash();
             System.out.println("\t"+gameData);
@@ -151,7 +155,9 @@ public class Controller
         {
             System.out.println("/gameList");
             JSONObject json = new JSONObject();
-            games.forEach((key, value) -> json.append(Util.JSON_KEY_GameData, value.jsonHash()));
+            games.values().stream()
+                 .sorted(Comparator.comparingInt(game -> game.globalGameIndex))
+                 .forEach((gameConsumer) -> json.append(Util.JSON_KEY_GameData, gameConsumer.jsonHash()));
             System.out.println("\t"+json.toString());
             return json.toString();
         });

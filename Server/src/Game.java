@@ -11,9 +11,11 @@ public class Game implements Runnable
     private int gameHeight;
     private ArrayList<Line> lines;
     private ArrayList<Player> players;
+    public int globalGameIndex;//for ordering games by time of creation
 
-    private Game(int playerCount, int gameWidth, int gameHeight)
+    private Game(int playerCount, int gameWidth, int gameHeight, int gameIndex)
     {
+        this.globalGameIndex = gameIndex;
         this.gameHeight = gameHeight;
 
         this.players = new ArrayList<>(playerCount);
@@ -33,11 +35,12 @@ public class Game implements Runnable
         lines.add(new Line(gameWidth, players.get(players.size()-1), players.get(0)));
     }
 
-    public Game(JSONObject jsonObject)
+    public Game(JSONObject jsonObject, int gameCount)
     {
         this(jsonObject.getInt(Util.JSON_KEY_PlayerCount),
              jsonObject.getInt(Util.JSON_KEY_GameWidth),
-             jsonObject.getInt(Util.JSON_KEY_GameHeight));
+             jsonObject.getInt(Util.JSON_KEY_GameHeight),
+             gameCount);
     }
 
     public JSONObject toJson()
