@@ -26,16 +26,15 @@ function handleGameList(xhr)
 
 function updateGameList(gameList)
 {
-	var template = "<ul>";
+	var template = "";
 	if (gameList.gameData === undefined || gameList.gameData.length === 0)
 		template += "<li>No games found"
 	else {
 		for (var i = 0; i < gameList.gameData.length; i++) {
 			var queryString = "gameHash=" + gameList.gameData[i].gameHash + "&playerHash=" + gameList.gameData[i].gamePlayers[1] + "&playerIndex=1";
-			template += "<li><a href='game.html?" + queryString + "'>Game " + (i + 1) + "</a>";
+			template += "<a href='game.html?" + queryString + "'>Game " + (i + 1) + "</a><br>";
 		}
 	}
-	template += "</ul>";
 	document.getElementById("gameListPanel").innerHTML = template;
 }
 
