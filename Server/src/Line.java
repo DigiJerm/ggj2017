@@ -1,5 +1,7 @@
 import org.json.JSONObject;
 
+import java.util.Random;
+
 /**
  * Created by Atraxi on 21/01/2017.
  */
@@ -14,11 +16,6 @@ public class Line
     public Line(int gameWidth, Player player0, Player player1)
     {
         this.pointSize = new int[gameWidth];
-//        Random random = new Random();
-//        for(int index = 0; index < gameWidth; index++)
-//        {
-//            pointSize[index] = random.nextInt(900) - 450;
-//        }
         this.pointDirectionIsLeft = new boolean[gameWidth];
         this.player0 = player0;
         player0.addLine(this);
@@ -30,49 +27,76 @@ public class Line
     {
         int[] newPointSize = new int[pointSize.length];
         boolean[] newPointDirectionIsLeft = new boolean[pointDirectionIsLeft.length];
-//        Random random = new Random();
-//        for(int index = 0; index < pointSize.length; index++)
-//        {
-//            pointSize[index] = random.nextInt(900) - 450;
-//        }
-        for(int index = 0; index < pointSize.length; index++)
-        {
-            if(pointDirectionIsLeft[index])
-            {
-                if(index == 0 && pointSize[index] != 0)
-                {
-                    System.err.println("Player -> Wins");
-                    player0.setIsDead();
-                }
-                else
-                {
-                    newPointSize[index-1] = pointSize[index];
-                    newPointDirectionIsLeft[index-1] = true;
-                }
-            }
-            else
-            {
-                if(index == pointSize.length-1 && pointSize[index] != 0)
-                {
-                    System.err.println("Player <- Wins");
-                    player1.setIsDead();
-                }
-                else
-                {
-                    newPointSize[index+1] = pointSize[index];
-                    newPointDirectionIsLeft[index+1] = false;
-                }
-            }
-        }
 
         synchronized(this)
         {
+            for(int index = 0; index < pointSize.length; index++)
+            {
+                if(pointSize[index] != 0)
+                {
+                    if(pointDirectionIsLeft[index])
+                    {
+                        if(index == 0 && pointSize[index] != 0)
+                        {
+                            System.err.println("Player -> Wins");
+                            player0.setIsDead();
+                        }
+                        else
+                        {
+                            //Determine direction
+                            if(newPointSize[index - 1] == 0 || Math.abs(pointSize[index]) > Math.abs(newPointSize[index - 1]))
+                            {//Moving left
+                                newPointDirectionIsLeft[index - 1] = true;
+                            }
+                            else if(Math.abs(newPointSize[index - 1]) > Math.abs(pointSize[index]) && !newPointDirectionIsLeft[index - 1])
+                            {//Moving right
+                                newPointDirectionIsLeft[index - 1] = false;
+                            }
+                            else
+                            {
+                                System.err.println("direction unknown!!!!!!!!!!!!!!");
+
+                            }
+
+                            //Determine size
+                            newPointSize[index - 1] += pointSize[index];
+                        }
+                    }
+                    else
+                    {
+                        if(index == pointSize.length - 1 && pointSize[index] != 0)
+                        {
+                            System.err.println("Player <- Wins");
+                            player1.setIsDead();
+                        }
+                        else
+                        {
+                            //Determine direction
+                            if(newPointSize[index + 1] == 0 || Math.abs(pointSize[index]) > Math.abs(newPointSize[index + 1]))
+                            {//Moving right
+                                newPointDirectionIsLeft[index + 1] = false;
+                            }
+                            else if(Math.abs(newPointSize[index + 1]) > Math.abs(pointSize[index]) && newPointDirectionIsLeft[index + 1])
+                            {//Moving left
+                                newPointDirectionIsLeft[index + 1] = false;
+                            }
+                            else
+                            {
+                                System.err.println("direction unknown!!!!!!!!!!!!!!");
+
+                            }
+
+                            //Determine size
+                            newPointSize[index + 1] += pointSize[index];
+                        }
+                    }
+                }
+            }
+
             pointSize = newPointSize;
             pointDirectionIsLeft = newPointDirectionIsLeft;
         }
     }
-
-    //private int getSumOfN
 
     public JSONObject toJson()
     {
@@ -105,6 +129,15 @@ public class Line
             {
                 System.err.println("Unknown player:"+source.toJson());
             }
+        }
+    }
+
+    public void setToRandom(int gameHeight)
+    {
+        Random random = new Random();
+        for(int index = 0; index < pointSize.length; index++)
+        {
+            pointSize[index] = random.nextInt(gameHeight) - gameHeight/2;
         }
     }
 }

@@ -32,9 +32,10 @@ public class Player
         linkedLines.add(line);
     }
 
-    public void setCharge(JSONObject jsonObject)
+    public void setCharge(JSONObject jsonObject, int gameHeight)
     {
-        health = jsonObject.getInt(Util.JSON_KEY_Player_Value);
+        health = (jsonObject.getInt(Util.JSON_KEY_Player_Value) * gameHeight) / 90;
+        System.err.println("Player health:"+health);
     }
 
     public void setIsDead()
@@ -44,7 +45,7 @@ public class Player
 
     /**
      * runs update code
-     * @return if the player is now marked as 'dead'
+     * @return if the player is still alive
      */
     public boolean update()
     {
@@ -57,6 +58,6 @@ public class Player
             line.playerUpdate(health, this);
         }
 
-        return isDead;
+        return !isDead;
     }
 }

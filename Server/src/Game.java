@@ -71,12 +71,13 @@ public class Game implements Runnable
             lines.forEach(Line::update);
 
             try{
-                Thread.sleep(1000 / 60);
+                Thread.sleep(1000 / 30);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
             //areAllPlayersReady = players.stream().allMatch(x -> x.hasRequestedPause);
         }
+        lines.forEach(line -> line.setToRandom(gameHeight));
     }
 
     public JSONObject jsonHash()
@@ -92,7 +93,7 @@ public class Game implements Runnable
 
     public void playerUpdate(int hashCode, JSONObject jsonObject)
     {
-        getPlayerByHash(hashCode).setCharge(jsonObject);
+        getPlayerByHash(hashCode).setCharge(jsonObject, gameHeight);
     }
 
     public Line getLineByHash(int hashcode)
