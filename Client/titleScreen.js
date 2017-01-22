@@ -1,6 +1,12 @@
 window.onload = function()
 {
 	document.getElementById("createGameBtn").addEventListener("click", createGame);
+	reloadGameList();
+	window.setInterval(reloadGameList, 4000);
+};
+
+function reloadGameList()
+{
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(x) {
 		return function() {
@@ -17,7 +23,7 @@ window.onload = function()
 	xhr.open("GET", "/gameList");
 	xhr.responseType = "json";
 	xhr.send();
-};
+}
 
 function handleGameList(xhr)
 {
