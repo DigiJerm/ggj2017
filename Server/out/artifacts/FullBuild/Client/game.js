@@ -5,6 +5,8 @@ function Game(gameHash, playerHash, playerIndex)
 	this.playerIndex = playerIndex;
 	this.line = new Line();
 	this.charge = 0;
+	this.gameEnded = false;
+
 	this.chargeAnimation = [];
 	this.backgroundImage = preLoadImage("Assets/Background.png");
 	for (var i = 0; i < 18; i++) {
@@ -14,6 +16,8 @@ function Game(gameHash, playerHash, playerIndex)
 	}
 	this.upArrowImage = preLoadImage("Assets/indicatorUp.png");
 	this.downArrowImage = preLoadImage("Assets/indicatorDown.png");
+	this.winImage = preLoadImage("Assets/ExplosionImplosionIconWin.png");
+	this.loseImage = preLoadImage("Assets/ExplosionImplosionIconLose.png");
 	preLoadEnd();
 }
 
@@ -21,6 +25,8 @@ function Game(gameHash, playerHash, playerIndex)
 
 Game.prototype.update = function()
 {
+	if (this.gameEnded)
+		return;
 	this.loadState();
 	if (Key.isDown(Key.UP)) {
 		if (this.charge < 45) {
@@ -65,7 +71,7 @@ Game.prototype.render = function()
 	context.beginPath();
 	context.moveTo(1920 / (this.line.NumPoints - 1) * 0, 450 + this.line.Offsets[0]);
 	for (var i = 1; i < this.line.NumPoints; i++)
-		context.lineTo(1920 / (this.line.NumPoints - 1) * i, 450 + this.line.Offsets[i]);
+		context.lineTo(1920 / (this.line.NumPoints - 1) * i, 450 - this.line.Offsets[i]);
 	context.stroke();
 	context.shadowColor = "black";
 	context.shadowBlur = 0;
@@ -86,6 +92,10 @@ Game.prototype.render = function()
 			context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 253 - chargeSize / 2, 140 - chargeSize / 2, chargeSize, chargeSize);
 		else
 			context.drawImage(this.chargeAnimation[i], 419, 0, 2213, 2213, 1920 - 253 - chargeSize / 2, 900 - 140 - chargeSize / 2, chargeSize, chargeSize);
+	}
+
+	if (this.gameEnded) {
+		context.drawImage(this.win ? this.winImage : this.loseImage, 339, 0, 1241, 900);
 	}
 };
 
@@ -145,6 +155,12 @@ Game.prototype.loadState = function () {
 
 
 Game.prototype.handleStateLoaded = function (xhr) {
+	for (var i = 0; i < xhr.response.players.length; i++) {
+		if (xhr.response.players[i].isDead) {
+			this.gameEnded = true;
+			this.win = (i === this.playerIndex);
+		}
+	}
 	for (var i = 0; i < xhr.response.lines[0].lineMagnitude.length; i++) {
 		this.line.Offsets[i] = xhr.response.lines[0].lineMagnitude[i];
 	}
