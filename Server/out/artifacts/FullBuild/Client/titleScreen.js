@@ -27,14 +27,25 @@ function handleGameList(xhr)
 function updateGameList(gameList)
 {
 	var template = "";
-	if (gameList.gameData === undefined || gameList.gameData.length === 0)
-		template += "No games found"
-	else {
+	var numGames = 0;
+	if (gameList.gameData !== undefined && gameList.gameData.length !== 0) {
 		for (var i = 0; i < gameList.gameData.length; i++) {
+			var finished = false;
+			for (var j = 0; j < gameList.gameData[i].gamePlayers.length; j++) {
+				if (gameList.gameData[i].gamePlayers[j].isDead) {
+					finished = true;
+					break;
+				}
+			}
+			if (finished)
+				continue;
 			var queryString = "gameHash=" + gameList.gameData[i].gameHash + "&playerHash=" + gameList.gameData[i].lines[0].linePlayer1 + "&playerIndex=1";
-			template += "<a href='game.html?" + queryString + "'>Game " + (i + 1) + "</a><br>";
+			template += "<a href='game.html?" + queryString + "'>Game " + (numGames + 1) + "</a><br>";
+			numGames++;
 		}
 	}
+	if (numGames === 0)
+		template += "No games found";
 	document.getElementById("gameListPanel").innerHTML = template;
 }
 
