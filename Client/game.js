@@ -71,7 +71,7 @@ Game.prototype.render = function()
 	context.beginPath();
 	context.moveTo(1920 / (this.line.NumPoints - 1) * 0, 450 + this.line.Offsets[0]);
 	for (var i = 1; i < this.line.NumPoints; i++)
-		context.lineTo(1920 / (this.line.NumPoints - 1) * i, 450 + this.line.Offsets[i]);
+		context.lineTo(1920 / (this.line.NumPoints - 1) * i, 450 - this.line.Offsets[i]);
 	context.stroke();
 	context.shadowColor = "black";
 	context.shadowBlur = 0;
