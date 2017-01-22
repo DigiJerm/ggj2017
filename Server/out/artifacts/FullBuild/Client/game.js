@@ -25,8 +25,8 @@ function Game(gameHash, playerHash, playerIndex)
 
 Game.prototype.update = function()
 {
-	if (this.gameEnded)
-		return;
+	//if (this.gameEnded)
+		//return;
 	this.loadState();
 	if (Key.isDown(Key.UP)) {
 		if (this.charge < 45) {
