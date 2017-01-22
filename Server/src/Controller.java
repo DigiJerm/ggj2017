@@ -157,7 +157,7 @@ public class Controller
             JSONObject json = new JSONObject();
             games.values().stream()
                  .sorted(Comparator.comparingInt(game -> game.globalGameIndex))
-                 .forEach((gameConsumer) -> json.append(Util.JSON_KEY_GameData, gameConsumer.jsonHash()));
+                 .forEach((gameConsumer) -> json.append(Util.JSON_KEY_GameData, gameConsumer.toJson()));
             System.out.println("\t"+json.toString());
             return json.toString();
         });
